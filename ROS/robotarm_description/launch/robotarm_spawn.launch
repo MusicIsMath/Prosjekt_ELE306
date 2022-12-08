@@ -1,0 +1,38 @@
+<launch>
+  <arg name="robot_name"  default="robotarm"/>
+  <arg name="init_x_pos" default="0.0"/>
+  <arg name="init_y_pos" default="0.0"/>
+  <arg name="init_z_pos" default="0.0"/>
+  <arg name="init_yaw"   default="0.0"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find robotarm_description)/urdf/robotarm.xacro" />
+
+  <!--<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+    args="-urdf -model $(arg robot_name) -x $(arg init_x_pos) -y $(arg init_y_pos) -z $(arg init_z_pos) -Y $(arg init_yaw) -param robot_description" />-->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model robotarm"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="100.0" />
+    <param name="tf_prefix" value="robotarm" />
+  </node> -->
+
+  <!-- <rosparam file="$(find robotarm_description)/config/joint_controller.yaml" command="load"/>
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="robotarm"
+    args="joint_state_controller pris_controller rev_1_controller rev_2_controller rev_3_controller rev_4_controller -->
+
+  <rosparam file="$(find robotarm_description)/config/joint_controller.yaml" command="load"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="robotarm"
+    args="joint_state_controller pris_controller rev_1_controller rev_2_controller rev_3_controller rev_4_controller"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+    <remap from="/joint_states" to="/robotarm/joint_states"/>
+  </node>
+
+</launch>

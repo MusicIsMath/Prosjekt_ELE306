@@ -1,0 +1,34 @@
+robotarm:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 1000
+
+  # Controller
+  pris_controller:
+    type: position_controllers/JointPositionController
+    joint: Slider
+
+  rev_1_controller:
+    type: position_controllers/JointPositionController
+    joint: Rev2
+
+  rev_2_controller:
+    type: position_controllers/JointPositionController
+    joint: Rev1
+
+  rev_3_controller:
+    type: position_controllers/JointPositionController
+    joint: Rev4
+
+  rev_4_controller:
+    type: position_controllers/JointPositionController
+    joint: Rev3
+  # PID
+  gazebo_ros_control:
+    pid_gains:
+      Slider: {p: 1000.0, i: 10, d: 120.0}
+      Rev2: {p: 1000.0, i: 10, d: 120.0}
+      Rev1: {p: 1000.0, i: 10, d: 120.0}
+      Rev4: {p: 1000.0, i: 10, d: 120.0}
+      Rev3: {p: 1000.0, i: 10, d: 120.0}
